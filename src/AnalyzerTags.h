@@ -24,6 +24,7 @@ namespace AnalyzerTag {
 
 		// Application-layer analyzers (hand-written).
 		BitTorrent, BitTorrentTracker,
+        Browser,
 		DCE_RPC, DNS, Finger, FTP, Gnutella, HTTP, Ident, IRC,
 		Login, NCP, NetbiosSSN, NFS, NTP, POP3, Portmapper, Rlogin,
 		RPC, Rsh, SMB, SMTP, SSH,

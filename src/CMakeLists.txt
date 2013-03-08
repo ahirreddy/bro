@@ -193,6 +193,8 @@ binpac_target(ayiya.pac
     ayiya-protocol.pac ayiya-analyzer.pac)
 binpac_target(bittorrent.pac
     bittorrent-protocol.pac bittorrent-analyzer.pac)
+binpac_target(browser.pac
+    browser-protocol.pac browser-analyzer.pac)
 binpac_target(dce_rpc.pac
     dce_rpc-protocol.pac dce_rpc-analyzer.pac epmapper.pac)
 binpac_target(dce_rpc_simple.pac
@@ -385,6 +387,7 @@ set(bro_SRCS
     RuleAction.cc
     RuleCondition.cc
     RuleMatcher.cc
+		Browser.cc
     ScriptAnaly.cc
     SmithWaterman.cc
     SMB.cc
