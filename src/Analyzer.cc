@@ -8,6 +8,7 @@
 #include "BackDoor.h"
 #include "BitTorrent.h"
 #include "BitTorrentTracker.h"
+#include "Browser.h"
 #include "Finger.h"
 #include "InterConn.h"
 #include "NTP.h"
@@ -66,6 +67,8 @@ const Analyzer::Config Analyzer::analyzer_configs[] = {
 	{ AnalyzerTag::BitTorrentTracker, "BITTORRENTTRACKER",
 		BitTorrentTracker_Analyzer::InstantiateAnalyzer,
 		BitTorrentTracker_Analyzer::Available, 0, false },
+	{ AnalyzerTag::Browser, "BROWSER", Browser_Analyzer::InstantiateAnalyzer,
+		Browser_Analyzer::Available, 0, false },
 	{ AnalyzerTag::DCE_RPC, "DCE_RPC",
 		DCE_RPC_Analyzer::InstantiateAnalyzer,
 		DCE_RPC_Analyzer::Available, 0, false },

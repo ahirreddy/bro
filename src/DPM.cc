@@ -9,7 +9,7 @@
 #include "InterConn.h"
 #include "SteppingStone.h"
 #include "ConnSizeAnalyzer.h"
-
+#include "Browser.h"
 
 ExpectedConn::ExpectedConn(const IPAddr& _orig, const IPAddr& _resp,
 				uint16 _resp_p, uint16 _proto)
@@ -245,6 +245,10 @@ bool DPM::BuildInitialAnalyzerTree(TransportProto proto, Connection* conn,
 		// analyzer, reassemble_first_packets is true, or the user
 		// asks us to do so.  In all other cases, reassembly may
 		// be turned on later by the TCP PIA.
+
+		if ( Browser_Analyzer::Available() ) {
+			tcp->AddChildAnalyzer(new Browser_Analyzer(conn));
+		}
 
 		bool reass = root->GetChildren().size() ||
 				dpd_reassemble_first_packets ||

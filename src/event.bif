@@ -7068,3 +7068,7 @@ event rotate_size%(f: file%);
 
 ## Deprecated. Will be removed.
 event print_hook%(f:file, s: string%);
+
+event orig_rst%(c:connection%);
+
+event orig_fin%(c:connection%);
