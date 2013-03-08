@@ -8,7 +8,6 @@
 class Browser_Analyzer : public SSL_Analyzer {
 public:
 	Browser_Analyzer(Connection* conn);
-	virtual ~Browser_Analyzer();
 
 	static Analyzer* InstantiateAnalyzer(Connection* conn)
 		{ return new Browser_Analyzer(conn); }
@@ -27,6 +26,9 @@ public:
 
     virtual void Browser_Analyzer::DeliverPacket(int len, const u_char* data,
                         bool is_orig, int seq, const IP_Hdr* ip, int caplen);
+
+    virtual const struct tcphdr* Browser_Analyzer::ExtractTCP_Header(const u_char*& data,
+    					int& len, int& caplen);
 
 private:
     unsigned int RST_cnt;

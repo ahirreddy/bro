@@ -1,33 +1,6 @@
 #include "Browser.h"
 #include "TCP_Reassembler.h"
 
-const struct tcphdr* ExtractTCP_Header(const u_char*& data, int& len, int& caplen)
-	{
-	const struct tcphdr* tp = (const struct tcphdr*) data;
-	uint32 tcp_hdr_len = tp->th_off * 4;
-
-	if ( tcp_hdr_len < sizeof(struct tcphdr) )
-		{
-		//Weird("bad_TCP_header_len");
-		return 0;
-		}
-
-	if ( tcp_hdr_len > uint32(len) ||
-	     sizeof(struct tcphdr) > uint32(caplen) )
-		{
-		// This can happen even with the above test, due to TCP
-		// options.
-		//Weird("truncated_header");
-		return 0;
-		}
-
-	len -= tcp_hdr_len;	// remove TCP header
-	caplen -= tcp_hdr_len;
-	data += tcp_hdr_len;
-
-	return tp;
-	}
-
 Browser_Analyzer::Browser_Analyzer(Connection* c)
 : SSL_Analyzer(c)
 	{
@@ -70,4 +43,32 @@ void Browser_Analyzer::DeliverPacket(int len, const u_char* data, bool is_orig,
 		}
 
 		SSL_Analyzer::DeliverPacket(len, data, is_orig, seq, ip, caplen);
+	}
+
+const struct tcphdr* Browser_Analyzer::ExtractTCP_Header(const u_char*& data,
+					int& len, int& caplen)
+	{
+	const struct tcphdr* tp = (const struct tcphdr*) data;
+	uint32 tcp_hdr_len = tp->th_off * 4;
+
+	if ( tcp_hdr_len < sizeof(struct tcphdr) )
+		{
+		//Weird("bad_TCP_header_len");
+		return 0;
+		}
+
+	if ( tcp_hdr_len > uint32(len) ||
+	     sizeof(struct tcphdr) > uint32(caplen) )
+		{
+		// This can happen even with the above test, due to TCP
+		// options.
+		//Weird("truncated_header");
+		return 0;
+		}
+
+	len -= tcp_hdr_len;	// remove TCP header
+	caplen -= tcp_hdr_len;
+	data += tcp_hdr_len;
+
+	return tp;
 	}
