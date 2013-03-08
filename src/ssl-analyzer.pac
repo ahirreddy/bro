@@ -110,6 +110,7 @@ refine connection SSL_Conn += {
 
 	%init{
 		eof=0;
+		_ssl_est=false;
 	%}
 
 	#%eof{
@@ -356,6 +357,7 @@ refine connection SSL_Conn += {
 				orig_label(${rec.is_orig}).c_str(),
 				state_label(old_state_).c_str()));
 
+		_ssl_est = true;
 		BifEvent::generate_ssl_established(bro_analyzer(),
 				bro_analyzer()->Conn());
 
@@ -398,9 +400,9 @@ refine connection SSL_Conn += {
 		else if ( state_ == STATE_CONN_ESTABLISHED &&
 		          old_state_ == STATE_COMM_ENCRYPTED )
 			{
+			_ssl_est = true;
 			BifEvent::generate_ssl_established(bro_analyzer(),
 							bro_analyzer()->Conn());
-			_ssl_est = true;
 			}
 
 		return true;
