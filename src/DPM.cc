@@ -247,8 +247,9 @@ bool DPM::BuildInitialAnalyzerTree(TransportProto proto, Connection* conn,
 		// be turned on later by the TCP PIA.
 
 		if ( Browser_Analyzer::Available() && Browser_SSL_Analyzer::Available() ) {
-			tcp->AddChildAnalyzer(new Browser_Analyzer(conn));
-			tcp->AddChildAnalyzer(new Browser_SSL_Analyzer(conn));
+			Browser_Analyzer * tcp_analyzer = new Browser_Analyzer(conn);
+			tcp->AddChildAnalyzer(tcp_analyzer);
+			tcp->AddChildAnalyzer(new Browser_SSL_Analyzer(conn, tcp_analyzer));
 		}
 
 		bool reass = root->GetChildren().size() ||

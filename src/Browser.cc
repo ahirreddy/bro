@@ -5,6 +5,7 @@ Browser_Analyzer::Browser_Analyzer(Connection* c)
 : TCP_ApplicationAnalyzer(AnalyzerTag::Browser, c)
 	{
 		RST_cnt = 0;
+		ssl_est = false;
 	}
 
 void Browser_Analyzer::PacketWithRST()
@@ -27,31 +28,20 @@ void Browser_Analyzer::ConnectionClosed(TCP_Endpoint* endpoint,
 		TCP_ApplicationAnalyzer::ConnectionClosed(endpoint, peer, gen_event);
 	}
 
-Browser_SSL_Analyzer::Browser_SSL_Analyzer(Connection* c)
-: SSL_Analyzer(c)
-	{
-
-	}
-
-void Browser_SSL_Analyzer::DeliverStream(int len, const u_char* data, bool orig)
-	{
-		SSL_Analyzer::DeliverStream(len, data, orig);
-	}
-
-void Browser_SSL_Analyzer::DeliverPacket(int len, const u_char* data, bool is_orig,
+void Browser_Analyzer::DeliverPacket(int len, const u_char* data, bool is_orig,
 					int seq, const IP_Hdr* ip, int caplen)
 	{
-		if (is_orig && interp->ssl_est()) {
+		if (is_orig && ssl_est) {
 			const struct tcphdr* tp = ExtractTCP_Header(data, len, caplen);
 			TCP_Flags flags(tp);
 			if ( !flags.SYN() && !flags.ACK() && !flags.RST() && !flags.RST() )
 				cout << "This must be a data packet";
 		}
 
-		SSL_Analyzer::DeliverPacket(len, data, is_orig, seq, ip, caplen);
+		TCP_ApplicationAnalyzer::DeliverPacket(len, data, is_orig, seq, ip, caplen);
 	}
 
-const struct tcphdr* Browser_SSL_Analyzer::ExtractTCP_Header(const u_char*& data,
+const struct tcphdr* Browser_Analyzer::ExtractTCP_Header(const u_char*& data,
 					int& len, int& caplen)
 	{
 	const struct tcphdr* tp = (const struct tcphdr*) data;
@@ -77,4 +67,24 @@ const struct tcphdr* Browser_SSL_Analyzer::ExtractTCP_Header(const u_char*& data
 	data += tcp_hdr_len;
 
 	return tp;
+	}
+
+Browser_SSL_Analyzer::Browser_SSL_Analyzer(Connection* c, Browser_Analyzer* analyzer)
+: SSL_Analyzer(c)
+	{
+		tcp_analyzer = analyzer;
+	}
+
+void Browser_SSL_Analyzer::DeliverStream(int len, const u_char* data, bool orig)
+	{
+		SSL_Analyzer::DeliverStream(len, data, orig);
+	}
+
+void Browser_SSL_Analyzer::DeliverPacket(int len, const u_char* data, bool is_orig,
+					int seq, const IP_Hdr* ip, int caplen)
+	{
+		if (interp->ssl_est())
+			tcp_analyzer->ssl_est = true;
+
+		SSL_Analyzer::DeliverPacket(len, data, is_orig, seq, ip, caplen);
 	}
