@@ -2,7 +2,7 @@
 #include "TCP_Reassembler.h"
 
 Browser_Analyzer::Browser_Analyzer(Connection* c)
-: SSL_Analyzer(c)
+: TCP_ApplicationAnalyzer(AnalyzerTag::Browser, c)
 	{
 		RST_cnt = 0;
 	}
@@ -27,12 +27,18 @@ void Browser_Analyzer::ConnectionClosed(TCP_Endpoint* endpoint,
 		TCP_ApplicationAnalyzer::ConnectionClosed(endpoint, peer, gen_event);
 	}
 
-void Browser_Analyzer::DeliverStream(int len, const u_char* data, bool orig)
+Browser_SSL_Analyzer::Browser_SSL_Analyzer(Connection* c)
+: SSL_Analyzer(c)
+	{
+
+	}
+
+void Browser_SSL_Analyzer::DeliverStream(int len, const u_char* data, bool orig)
 	{
 		SSL_Analyzer::DeliverStream(len, data, orig);
 	}
 
-void Browser_Analyzer::DeliverPacket(int len, const u_char* data, bool is_orig,
+void Browser_SSL_Analyzer::DeliverPacket(int len, const u_char* data, bool is_orig,
 					int seq, const IP_Hdr* ip, int caplen)
 	{
 		if (is_orig && interp->ssl_est()) {
@@ -45,7 +51,7 @@ void Browser_Analyzer::DeliverPacket(int len, const u_char* data, bool is_orig,
 		SSL_Analyzer::DeliverPacket(len, data, is_orig, seq, ip, caplen);
 	}
 
-const struct tcphdr* Browser_Analyzer::ExtractTCP_Header(const u_char*& data,
+const struct tcphdr* Browser_SSL_Analyzer::ExtractTCP_Header(const u_char*& data,
 					int& len, int& caplen)
 	{
 	const struct tcphdr* tp = (const struct tcphdr*) data;

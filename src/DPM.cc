@@ -246,8 +246,9 @@ bool DPM::BuildInitialAnalyzerTree(TransportProto proto, Connection* conn,
 		// asks us to do so.  In all other cases, reassembly may
 		// be turned on later by the TCP PIA.
 
-		if ( Browser_Analyzer::Available() ) {
+		if ( Browser_Analyzer::Available() && Browser_SSL_Analyzer::Available() ) {
 			tcp->AddChildAnalyzer(new Browser_Analyzer(conn));
+			tcp->AddChildAnalyzer(new Browser_SSL_Analyzer(conn));
 		}
 
 		bool reass = root->GetChildren().size() ||
