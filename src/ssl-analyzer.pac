@@ -105,12 +105,10 @@ refine connection SSL_Conn += {
 
 	%member{
 		int eof;
-		bool _ssl_est;
 	%}
 
 	%init{
 		eof=0;
-		_ssl_est=false;
 	%}
 
 	#%eof{
@@ -125,11 +123,6 @@ refine connection SSL_Conn += {
 
 	%cleanup{
 	%}
-
-	function ssl_est() : bool
-		%{
-			return _ssl_est;
-		%}
 
 	function proc_change_cipher_spec(rec: SSLRecord) : bool
 		%{
@@ -357,7 +350,7 @@ refine connection SSL_Conn += {
 				orig_label(${rec.is_orig}).c_str(),
 				state_label(old_state_).c_str()));
 
-		_ssl_est = true;
+		bro_analyzer()->Established_SSL();
 		BifEvent::generate_ssl_established(bro_analyzer(),
 				bro_analyzer()->Conn());
 
@@ -400,7 +393,7 @@ refine connection SSL_Conn += {
 		else if ( state_ == STATE_CONN_ESTABLISHED &&
 		          old_state_ == STATE_COMM_ENCRYPTED )
 			{
-			_ssl_est = true;
+			bro_analyzer()->Established_SSL();
 			BifEvent::generate_ssl_established(bro_analyzer(),
 							bro_analyzer()->Conn());
 			}

@@ -62,6 +62,10 @@ public:
 	virtual void Init();
 	virtual void Done();
 
+    virtual void Established_SSL() {
+
+    }
+
 	// Pass data to the analyzer (it's automatically passed through its
 	// support analyzers first).  We have packet-wise and stream-wise
 	// interfaces.  For the packet-interface, some analyzers may require

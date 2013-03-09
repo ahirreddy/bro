@@ -75,16 +75,7 @@ Browser_SSL_Analyzer::Browser_SSL_Analyzer(Connection* c, Browser_Analyzer* anal
 		tcp_analyzer = analyzer;
 	}
 
-void Browser_SSL_Analyzer::DeliverStream(int len, const u_char* data, bool orig)
+void Browser_SSL_Analyzer::Established_SSL()
 	{
-		SSL_Analyzer::DeliverStream(len, data, orig);
-	}
-
-void Browser_SSL_Analyzer::DeliverPacket(int len, const u_char* data, bool is_orig,
-					int seq, const IP_Hdr* ip, int caplen)
-	{
-		if (interp->ssl_est())
-			tcp_analyzer->ssl_est = true;
-
-		SSL_Analyzer::DeliverPacket(len, data, is_orig, seq, ip, caplen);
+		tcp_analyzer->ssl_est = true;
 	}
