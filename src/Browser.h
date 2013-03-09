@@ -5,10 +5,9 @@
 
 #include "browser_pac.h"
 
-class Browser_Analyzer : public SSL_Analyzer {
+class Browser_Analyzer : public TCP_ApplicationAnalyzer {
 public:
 	Browser_Analyzer(Connection* conn);
-	virtual ~Browser_Analyzer();
 
 	static Analyzer* InstantiateAnalyzer(Connection* conn)
 		{ return new Browser_Analyzer(conn); }

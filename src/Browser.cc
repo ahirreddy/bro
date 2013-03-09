@@ -2,7 +2,7 @@
 #include "TCP_Reassembler.h"
 
 Browser_Analyzer::Browser_Analyzer(Connection* c)
-: SSL_Analyzer(c)
+: TCP_ApplicationAnalyzer(AnalyzerTag::Browser, c)
 	{
 		RST_cnt = 0;
 	}
