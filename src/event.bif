@@ -7072,3 +7072,5 @@ event print_hook%(f:file, s: string%);
 event orig_rst%(c:connection%);
 
 event orig_fin%(c:connection%);
+
+event ssl_appdata%(c:connection, is_orig:bool%);

@@ -140,6 +140,9 @@ refine connection SSL_Conn += {
 			bro_analyzer()->ProtocolViolation(fmt("unexpected ApplicationData from %s at state %s",
 				orig_label(${rec.is_orig}).c_str(),
 				state_label(old_state_).c_str()));
+
+		BifEvent::generate_ssl_appdata(bro_analyzer(), bro_analyzer()->Conn(), ${rec.is_orig});
+
 		return true;
 		%}
 
