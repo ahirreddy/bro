@@ -105,7 +105,6 @@ refine connection SSL_Conn += {
 
 	%member{
 		int eof;
-		bool _ssl_est;
 	%}
 
 	%init{
@@ -124,11 +123,6 @@ refine connection SSL_Conn += {
 
 	%cleanup{
 	%}
-
-	function ssl_est() : bool
-		%{
-			return _ssl_est;
-		%}
 
 	function proc_change_cipher_spec(rec: SSLRecord) : bool
 		%{
@@ -400,7 +394,6 @@ refine connection SSL_Conn += {
 			{
 			BifEvent::generate_ssl_established(bro_analyzer(),
 							bro_analyzer()->Conn());
-			_ssl_est = true;
 			}
 
 		return true;
