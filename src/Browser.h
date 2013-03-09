@@ -17,16 +17,10 @@ public:
 	static bool Available()
 		{ return orig_fin || orig_rst; }
 
-    virtual void PacketWithRST();
+    void PacketWithRST();
 
-    virtual void Browser_Analyzer::ConnectionClosed(TCP_Endpoint* endpoint,
+    void ConnectionClosed(TCP_Endpoint* endpoint,
     				    TCP_Endpoint* peer, int gen_event);
-
-    virtual void Browser_Analyzer::DeliverStream(int len, const u_char* data,
-                        bool orig);
-
-    virtual void Browser_Analyzer::DeliverPacket(int len, const u_char* data,
-                        bool is_orig, int seq, const IP_Hdr* ip, int caplen);
 
 private:
     unsigned int RST_cnt;
