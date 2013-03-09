@@ -77,5 +77,6 @@ Browser_SSL_Analyzer::Browser_SSL_Analyzer(Connection* c, Browser_Analyzer* anal
 
 void Browser_SSL_Analyzer::Established_SSL()
 	{
+		cout << "Cross Analyzer Message\n";
 		tcp_analyzer->ssl_est = true;
 	}
