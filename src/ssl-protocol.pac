@@ -659,6 +659,8 @@ type CiphertextRecord(rec: SSLRecord) = record {
 		$context.connection.transition(STATE_CONN_ESTABLISHED,
 					STATE_CONN_ESTABLISHED, rec.is_orig, true) ||
 		$context.connection.lost_track();
+} &let {
+	app_data : bool = $context.connection.proc_application_data(rec);
 };
 
 
