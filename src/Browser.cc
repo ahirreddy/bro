@@ -26,21 +26,3 @@ void Browser_Analyzer::ConnectionClosed(TCP_Endpoint* endpoint,
 
 		TCP_ApplicationAnalyzer::ConnectionClosed(endpoint, peer, gen_event);
 	}
-
-void Browser_Analyzer::DeliverStream(int len, const u_char* data, bool orig)
-	{
-		SSL_Analyzer::DeliverStream(len, data, orig);
-	}
-
-void Browser_Analyzer::DeliverPacket(int len, const u_char* data, bool is_orig,
-					int seq, const IP_Hdr* ip, int caplen)
-	{
-		if (is_orig && interp->ssl_est()) {
-			const struct tcphdr* tp = TCP_Analyzer::ExtractTCP_Header(data, len, caplen);
-			TCP_Flags flags(tp);
-			if ( !flags.SYN() && !flags.ACK() && !flags.RST() && !flags.RST() )
-				cout << "This must be a data packet";
-		}
-
-		TCP_Analyzer::DeliverPacket(this, len, data, is_orig, seq, ip, caplen);
-	}
