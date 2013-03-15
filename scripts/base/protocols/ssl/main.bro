@@ -65,7 +65,7 @@ export {
 	## If true, detach the SSL analyzer from the connection to prevent
 	## continuing to process encrypted traffic. Helps with performance
 	## (especially with large file transfers).
-	const disable_analyzer_after_detection = F &redef;
+	const disable_analyzer_after_detection = T &redef;
 
 	## The openssl command line utility.  If it's in the path the default
 	## value will work, otherwise a full path string can be supplied for the
