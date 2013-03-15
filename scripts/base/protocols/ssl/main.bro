@@ -65,7 +65,7 @@ export {
 	## If true, detach the SSL analyzer from the connection to prevent
 	## continuing to process encrypted traffic. Helps with performance
 	## (especially with large file transfers).
-	const disable_analyzer_after_detection = F &redef;
+	const disable_analyzer_after_detection = T &redef;
 
 	## The maximum amount of time a script can delay records from being logged.
 	const max_log_delay = 15secs &redef;
