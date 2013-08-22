@@ -1,11 +1,14 @@
 #ifndef otcp_h
 #define otcp_h
 
-#include "SSL.h"
+#include "events.bif.h"
 
+#include "analyzer/protocol/tcp/TCP.h"
 #include "otcp_pac.h"
 
-class OTCP_Analyzer : public TCP_ApplicationAnalyzer {
+namespace analyzer { namespace otcp {
+
+class OTCP_Analyzer : public tcp::TCP_ApplicationAnalyzer {
 public:
 	OTCP_Analyzer(Connection* conn);
 
@@ -18,11 +21,13 @@ public:
 
     void PacketWithRST();
 
-    void ConnectionClosed(TCP_Endpoint* endpoint,
-    				    TCP_Endpoint* peer, int gen_event);
+    void ConnectionClosed(tcp::TCP_Endpoint* endpoint,
+    				    tcp::TCP_Endpoint* peer, int gen_event);
 
 private:
     unsigned int RST_cnt;
 };
+
+} } // namespace analyzer::*
 
 #endif

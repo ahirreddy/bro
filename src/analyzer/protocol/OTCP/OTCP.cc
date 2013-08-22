@@ -1,8 +1,9 @@
 #include "OTCP.h"
-#include "TCP_Reassembler.h"
+
+using namespace analyzer::otcp;
 
 OTCP_Analyzer::OTCP_Analyzer(Connection* c)
-: TCP_ApplicationAnalyzer(AnalyzerTag::OTCP, c)
+: tcp::TCP_ApplicationAnalyzer("OTCP", c)
 	{
 		RST_cnt = 0;
 	}
@@ -17,8 +18,8 @@ void OTCP_Analyzer::PacketWithRST()
 		TCP_ApplicationAnalyzer::PacketWithRST();
 	}
 
-void OTCP_Analyzer::ConnectionClosed(TCP_Endpoint* endpoint,
-				TCP_Endpoint* peer, int gen_event)
+void OTCP_Analyzer::ConnectionClosed(tcp::TCP_Endpoint* endpoint,
+				tcp::TCP_Endpoint* peer, int gen_event)
 	{
 		if ( endpoint->IsOrig() ) {
 			Event(orig_fin);
