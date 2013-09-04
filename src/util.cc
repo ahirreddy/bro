@@ -1609,6 +1609,7 @@ void operator delete[](void* v)
 
 void bro_init_magic(magic_t* cookie_ptr, int flags)
 	{
+  return;
 	if ( ! cookie_ptr || *cookie_ptr )
 		return;
 
